@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artificial Intelligence — The Future is Here</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050510;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --accent-blue: #00d4ff;
+      --accent-purple: #a855f7;
+      --accent-cyan: #06ffa5;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --glow-blue: 0 0 40px rgba(0,212,255,0.3);
+      --glow-purple: 0 0 40px rgba(168,85,247,0.3);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(5,5,16,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent-blue); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,212,255,0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 60%, rgba(168,85,247,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      border: 1px solid var(--accent-blue);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-blue);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      background: rgba(0,212,255,0.05);
+    }
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      max-width: 900px;
+    }
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 50%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn-primary {
+      padding: 0.8rem 2rem;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow-blue);
+    }
+    .btn-secondary {
+      padding: 0.8rem 2rem;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    /* PARTICLES */
+    #particles-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-content { position: relative; z-index: 1; }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-purple);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 3rem;
+      font-size: 1.05rem;
+    }
+
+    /* CARDS GRID */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,212,255,0.03), rgba(168,85,247,0.03));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,212,255,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .card:hover::before { opacity: 1; }
+    .card-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .card-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* SPLIT SECTIONS */
+    .split-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin: 4rem 0;
+    }
+    .split-section.reverse { direction: rtl; }
+    .split-section.reverse > * { direction: ltr; }
+    @media (max-width: 768px) {
+      .split-section { grid-template-columns: 1fr; gap: 2rem; }
+      .split-section.reverse { direction: ltr; }
+    }
+
+    .big-stat {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple));
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+    .timeline-item:hover {
+      border-color: rgba(0,212,255,0.3);
+      transform: translateX(4px);
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 1.8rem;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      box-shadow: var(--glow-blue);
+    }
+    .timeline-year {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .timeline-desc { color: var(--text-muted); font-size: 0.88rem; }
+
+    /* APPS GRID */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .app-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(168,85,247,0.4);
+      box-shadow: var(--glow-purple);
+    }
+    .app-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .app-name { font-weight: 700; margin-bottom: 0.3rem; }
+    .app-cat { color: var(--accent-purple); font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .app-desc { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem; }
+
+    /* CTA SECTION */
+    #cta {
+      text-align: center;
+      padding: 8rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(168,85,247,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+    .cta-desc { color: var(--text-muted); max-width: 500px; margin: 0 auto 2rem; font-size: 1.05rem; }
+    .cta-btn {
+      padding: 1rem 3rem;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+    .cta-btn:hover { transform: scale(1.05); box-shadow: var(--glow-purple); }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* SCROLL ANIMATIONS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+      border-radius: 2px;
+      margin: 1rem 0 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      section { padding: 4rem 1.2rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AI Explained</div>
+  <ul class="nav-links">
+    <li><a href="#what">What is AI</a></li>
+    <li><a href="#history">History</a></li>
+    <li><a href="#types">Types</a></li>
+    <li><a href="#tech">Technologies</a></li>
+    <li><a href="#apps">Applications</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge">🚀 The Next Frontier</div>
+    <h1 class="hero-title">
+      Artificial<br>
+      <span class="gradient-text">Intelligence</span>
+    </h1>
+    <p class="hero-subtitle">
+      From deep learning to generative models — explore the technologies shaping tomorrow's world. Beautiful, interactive, and designed for curious minds.
+    </p>
+    <div class="hero-cta">
+      <a href="#what" class="btn-primary">Start Exploring</a>
+      <a href="https://github.com" target="_blank" class="btn-secondary">View on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS AI -->
+<section id="what">
+  <div class="reveal">
+    <div class="section-label">01 — Foundations</div>
+    <h2 class="section-title">What is <span style="background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Artificial Intelligence</span>?</h2>
+    <div class="divider"></div>
+    <p class="section-desc">
+      Artificial Intelligence is the simulation of human intelligence by machines. It enables computers to think, learn, reason, and make decisions — tasks that previously required the human brain.
+    </p>
+  </div>
+  <div class="cards-grid reveal">
+    <div class="card">
+      <div class="card-icon" style="background:rgba(0,212,255,0.1);">🧠</div>
+      <div class="card-title">Learning</div>
+      <div class="card-desc">AI systems improve from experience. The more data they see, the better they become — without being explicitly programmed for every scenario.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(168,85,247,0.1);">🔄</div>
+      <div class="card-title">Reasoning</div>
+      <div class="card-desc">From chess to drug discovery, AI uses logical chains to evaluate outcomes and find optimal solutions across millions of possibilities.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(6,255,165,0.1);">👁️</div>
+      <div class="card-title">Perception</div>
+      <div class="card-desc">Computer vision, speech recognition, and sensory processing let AI understand the world the same way humans do — through sight and sound.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(251,146,60,0.1);">💬</div>
+      <div class="card-title">Language</div>
+      <div class="card-desc">Natural Language Processing gives machines the ability to read, write, translate, and converse in ways that feel genuinely human.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY TIMELINE -->
+<section id="history">
+  <div class="reveal">
+    <div class="section-label">02 — Origins</div>
+    <h2 class="section-title">History of AI</h2>
+    <div class="divider"></div>
+    <p class="section-desc">The journey from academic concept to everyday reality — spanning seven decades of breakthroughs, winters, and revolutions.</p>
+  </div>
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="timeline-year">1950</div>
+      <div class="timeline-title">Alan Turing asks: Can machines think?</div>
+      <div class="timeline-desc">Turing publishes "Computing Machinery and Intelligence" — laying the philosophical foundation for AI.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1956</div>
+      <div class="timeline-title">Dartmouth Conference — AI is born</div>
+      <div class="timeline-desc">John McCarthy coins the term "Artificial Intelligence." The field officially begins.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1966</div>
+      <div class="timeline-title">ELIZA — The first chatbot</div>
+      <div class="timeline-desc">Joseph Weizenbaum creates ELIZA at MIT, the first program to simulate human conversation.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1986</div>
+      <div class="timeline-title">Deep Learning revived</div>
+      <div class="timeline-desc">Geoffrey Hinton and others bring back neural networks, laying groundwork for modern deep learning.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">1997</div>
+      <div class="timeline-title">Deep Blue beats Kasparov</div>
+      <div class="timeline-desc">IBM's Deep Blue defeats world chess champion Garry Kasparov — AI's first major media moment.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2012</div>
+      <div class="timeline-title">AlexNet — The deep learning revolution</div>
+      <div class="timeline-desc">A convolutional neural network wins ImageNet by a landslide. The AI boom begins.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2020</div>
+      <div class="timeline-title">GPT-3 — Language takes off</div>
+      <div class="timeline-desc">OpenAI's GPT-3 shows that scale + transformer architecture = remarkably fluent AI text generation.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">2023–2026</div>
+      <div class="timeline-title">Generative AI goes mainstream</div>
+      <div class="timeline-desc">ChatGPT, Claude, Gemini, Sora, and hundreds of AI tools transform how we work, create, and communicate.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPES -->
+<section id="types">
+  <div class="reveal">
+    <div class="section-label">03 — Classification</div>
+    <h2 class="section-title">Types of AI</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="split-section reveal">
+    <div>
+      <div class="section-label" style="color:var(--accent-blue)">Narrow AI</div>
+      <h3 style="font-size:1.8rem;font-weight:700;margin:0.5rem 0;">AI that does one thing brilliantly</h3>
+      <p style="color:var(--text-muted);margin:1rem 0;">
+        Also called Weak AI — this is what we have today. Spam filters, Siri, recommendation algorithms, and AlphaFold are all narrow AI. They outperform humans at their specific task but can't generalize beyond it.
+      </p>
+      <div style="margin-top:1.5rem;">
+        <div style="color:var(--accent-cyan);font-weight:700;margin-bottom:0.5rem;">✓ Already everywhere</div>
+        <div style="color:var(--accent-cyan);font-weight:700;margin-bottom:0.5rem;">✓ Highly reliable at its task</div>
+        <div style="color:var(--accent-cyan);font-weight:700;">✓ Powers modern tech products</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;text-align:center;">
+      <div style="font-size:5rem;margin-bottom:1rem;">🎯</div>
+      <div style="color:var(--text-muted);font-size:0.9rem;">Your phone, your apps,<br>the internet — all powered by<br><strong style="color:var(--accent-blue)">Narrow AI</strong></div>
+    </div>
+  </div>
+  <div class="split-section reverse reveal">
+    <div>
+      <div class="section-label" style="color:var(--accent-purple)">AGI</div>
+      <h3 style="font-size:1.8rem;font-weight:700;margin:0.5rem 0;">Artificial General Intelligence</h3>
+      <p style="color:var(--text-muted);margin:1rem 0;">
+        The hypothetical AI that matches human intelligence across any domain — reasoning, creativity, social intelligence, and physical dexterity. No system has achieved this yet. It's the north star of AI research.
+      </p>
+      <div style="margin-top:1.5rem;">
+        <div style="color:var(--text-muted);font-weight:700;margin-bottom:0.5rem;">○ Would match human cognition</div>
+        <div style="color:var(--text-muted);font-weight:700;margin-bottom:0.5rem;">○ Self-aware and adaptable</div>
+        <div style="color:var(--text-muted);font-weight:700;">○ Still a research goal</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;text-align:center;">
+      <div style="font-size:5rem;margin-bottom:1rem;">🤖</div>
+      <div style="color:var(--text-muted);font-size:0.9rem;">The long game.<br>Not yet achieved.<br><strong style="color:var(--accent-purple)">AGI</strong></div>
+    </div>
+  </div>
+  <div class="split-section reveal">
+    <div>
+      <div class="section-label" style="color:#f43f5e">ASI</div>
+      <h3 style="font-size:1.8rem;font-weight:700;margin:0.5rem 0;">Artificial Super Intelligence</h3>
+      <p style="color:var(--text-muted);margin:1rem 0;">
+        A hypothetical AI that surpasses all human intelligence combined. Beyond science fiction's "Skynet" — this is a serious philosophical debate in AI safety circles. Some believe it's decades away; others say it's impossible by definition.
+      </p>
+      <div style="margin-top:1.5rem;">
+        <div style="color:#f43f5e;font-weight:700;margin-bottom:0.5rem;">△ Theoretical & debated</div>
+        <div style="color:#f43f5e;font-weight:700;margin-bottom:0.5rem;">△ Raises major safety questions</div>
+        <div style="color:#f43f5e;font-weight:700;">△ Outside current science</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;text-align:center;">
+      <div style="font-size:5rem;margin-bottom:1rem;">🌌</div>
+      <div style="color:var(--text-muted);font-size:0.9rem;">The far future —<br>uncertain and debated.<br><strong style="color:#f43f5e">ASI</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY TECHNOLOGIES -->
+<section id="tech">
+  <div class="reveal">
+    <div class="section-label">04 — Technology</div>
+    <h2 class="section-title">Key Technologies</h2>
+    <div class="divider"></div>
+    <p class="section-desc">The building blocks that make modern AI possible — from statistics to neural networks.</p>
+  </div>
+  <div class="cards-grid reveal">
+    <div class="card">
+      <div class="card-icon" style="background:rgba(0,212,255,0.1);">📊</div>
+      <div class="card-title">Machine Learning</div>
+      <div class="card-desc">The backbone of modern AI. ML algorithms find patterns in data and use them to make predictions — from Netflix recommendations to fraud detection.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(168,85,247,0.1);">🧬</div>
+      <div class="card-title">Deep Learning</div>
+      <div class="card-desc">Multi-layered neural networks that learn hierarchical representations. Powers image recognition, voice assistants, and generative AI.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(6,255,165,0.1);">💬</div>
+      <div class="card-title">Natural Language Processing</div>
+      <div class="card-desc">The bridge between human language and machine understanding. Enables chatbots, translation, search, and text generation at near-human fluency.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(251,146,60,0.1);">👁️</div>
+      <div class="card-title">Computer Vision</div>
+      <div class="card-desc">Teaching machines to see. From facial recognition to medical imaging to self-driving cars — CV gives AI eyes.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(168,85,247,0.1);">🔗</div>
+      <div class="card-title">Transformers & LLMs</div>
+      <div class="card-desc">The architecture behind GPT, Claude, and Gemini. Attention mechanisms let AI process entire documents at once — revolutionizing language understanding.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:rgba(0,212,255,0.1);">🤖</div>
+      <div class="card-title">Reinforcement Learning</div>
+      <div class="card-desc">AI learns through trial and error, optimizing for rewards. Used in game AI (AlphaGo), robotics, and training autonomous systems.</div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLICATIONS -->
+<section id="apps">
+  <div class="reveal">
+    <div class="section-label">05 — Impact</div>
+    <h2 class="section-title">Real-World Applications</h2>
+    <div class="divider"></div>
+    <p class="section-desc">AI isn't just a concept — it's already transforming industries worldwide.</p>
+  </div>
+  <div class="apps-grid reveal">
+    <div class="app-card">
+      <div class="app-icon">🏥</div>
+      <div class="app-name">Healthcare</div>
+      <div class="app-cat">Medical AI</div>
+      <div class="app-desc">AlphaFold predicts protein structures. AI detects cancers from scans. Drug discovery timelines cut from years to months.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">💰</div>
+      <div class="app-name">Finance</div>
+      <div class="app-cat">FinTech</div>
+      <div class="app-desc">Real-time fraud detection, algorithmic trading, credit scoring, and risk assessment — AI processes millions of transactions per second.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🎬</div>
+      <div class="app-name">Entertainment</div>
+      <div class="app-cat">Creative AI</div>
+      <div class="app-desc">Streaming recommendations, AI-generated art and music, procedural game worlds, and hyper-personalized content curation.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">📚</div>
+      <div class="app-name">Education</div>
+      <div class="app-cat">EdTech</div>
+      <div class="app-desc">Personalized tutoring, adaptive learning paths, AI grading assistants, and language learning apps that speak back.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🚗</div>
+      <div class="app-name">Transportation</div>
+      <div class="app-cat">Autonomous</div>
+      <div class="app-desc">Self-driving cars, AI traffic optimization, drone delivery fleets, and predictive maintenance on infrastructure.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🔬</div>
+      <div class="app-name">Science</div>
+      <div class="app-cat">Research AI</div>
+      <div class="app-desc">Climate modeling, particle physics analysis, genome research, and AI-assisted mathematical proofs — accelerating human discovery.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BY THE NUMBERS -->
+<section id="stats">
+  <div class="reveal" style="text-align:center;">
+    <div class="section-label" style="color:var(--accent-cyan)">05 — Scale</div>
+    <h2 class="section-title" style="margin-bottom:3rem;">AI in Numbers</h2>
+  </div>
+  <div class="cards-grid reveal">
+    <div class="card" style="text-align:center;">
+      <div class="big-stat">$184B</div>
+      <div class="card-title">Global AI Market (2026)</div>
+      <div class="card-desc">The AI market is expected to reach $184 billion this year, growing at 28% annually.</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="big-stat">72%</div>
+      <div class="card-title">Of Enterprises Use AI</div>
+      <div class="card-desc">Nearly three-quarters of enterprises are actively deploying or exploring AI solutions.</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="big-stat">300B+</div>
+      <div class="card-title">Parameters in Leading LLMs</div>
+      <div class="card-desc">State-of-the-art models now exceed 300 billion parameters — massive neural networks trained on internet-scale data.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="reveal" style="position:relative;z-index:1;">
+    <div class="cta-title">The future isn't coming.<br><span style="background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent">It's already here.</span></div>
+    <p class="cta-desc">AI is reshaping every industry on the planet. The best time to understand it is right now.</p>
+    <a href="https://github.com" target="_blank" class="cta-btn">Explore on GitHub →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Built with 💜 — An interactive journey through Artificial Intelligence</p>
+  <p style="margin-top:0.5rem;opacity:0.5;">2026 — Open to the future</p>
+</footer>
+
+<script>
+  // Particle animation
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.5 + 0.5,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      alpha: Math.random() * 0.5 + 0.2
+    });
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 212, 255, ${p.alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
